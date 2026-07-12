@@ -4,9 +4,11 @@ import {
   Brain,
   ChevronRight,
   Coffee,
+  ExternalLink,
   GraduationCap,
   HardHat,
   Heart,
+  LifeBuoy,
   Lightbulb,
   Lock,
   ShieldCheck,
@@ -14,7 +16,7 @@ import {
   Users,
 } from "lucide-react-native";
 import React from "react";
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import {
@@ -25,6 +27,10 @@ import {
 } from "@/constants/coach-william";
 import { useProAccess } from "@/constants/pro-access";
 import { theme } from "@/constants/theme";
+
+/** Base URL for the Coach William Training website hosted on GitHub Pages.
+ *  Update this after publishing your GitHub Pages site. */
+const SITE_URL = "https://coachwilliamtraining.github.io/coach-william-training";
 
 const WELCOME_PARAS = [
   "Welcome to Coach William's Rapid Recall System.",
@@ -67,6 +73,12 @@ const FUTURE_PRODUCTS = [
 export default function AboutScreen() {
   const insets = useSafeAreaInsets();
   const { isPro, lock } = useProAccess();
+
+  const openUrl = (url: string) => {
+    Linking.openURL(url).catch(() => {
+      Alert.alert("Unable to open link", "Please check your internet connection and try again.");
+    });
+  };
 
   const handleResetToFree = () => {
     lock();
@@ -281,6 +293,32 @@ export default function AboutScreen() {
             <Text style={styles.missionCtaText}>Grab a cup of coffee...</Text>
           </View>
           <Text style={styles.visionFinal}>Let's get to work, Hero!</Text>
+        </View>
+
+        {/* ── Legal & Support ── */}
+        <View style={styles.legalSection}>
+          <Pressable
+            onPress={() => openUrl(`${SITE_URL}/privacy.html`)}
+            style={({ pressed }) => [
+              styles.legalLink,
+              pressed && styles.btnPressed,
+            ]}
+          >
+            <ShieldCheck color={theme.colors.blue} size={18} strokeWidth={2.2} />
+            <Text style={styles.legalLinkText}>Privacy Policy</Text>
+            <ExternalLink color={theme.colors.textFaint} size={15} strokeWidth={2} />
+          </Pressable>
+          <Pressable
+            onPress={() => openUrl(`${SITE_URL}/support.html`)}
+            style={({ pressed }) => [
+              styles.legalLink,
+              pressed && styles.btnPressed,
+            ]}
+          >
+            <LifeBuoy color={theme.colors.amber} size={18} strokeWidth={2.2} />
+            <Text style={styles.legalLinkText}>Support & FAQ</Text>
+            <ExternalLink color={theme.colors.textFaint} size={15} strokeWidth={2} />
+          </Pressable>
         </View>
 
         {/* ── Footer ── */}
@@ -566,6 +604,29 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "900",
     marginTop: 4,
+  },
+
+  // ── Legal & Support ──
+  legalSection: {
+    gap: 10,
+    marginBottom: theme.spacing.md,
+  },
+  legalLink: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    gap: 12,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.radius.md,
+    paddingVertical: 14,
+    paddingHorizontal: theme.spacing.md,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+  },
+  legalLinkText: {
+    flex: 1,
+    color: theme.colors.text,
+    fontSize: 15,
+    fontWeight: "700",
   },
 
   // ── Footer ──

@@ -50,15 +50,20 @@ The site matches the Coach William CDL Coach app aesthetic:
 
 5. **Use that URL** in your App Store Connect and Google Play Console listings:
    - **App Store:** Enter the URL in the "Privacy Policy URL" field
-   - **Google Play:** Enter the URL in the "Privacy Policy" field under App Content
+   - **Google Play:** Enter the URL in the "Privacy Policy" field under App Content → Data Safety
+   - **Google Play:** Also enter the Support page URL in the "Support URL" or "Support email" field
+
+6. **Update the app:** After publishing, update `SITE_URL` in `expo/app/about.tsx`
+   to your live GitHub Pages URL so the in-app Privacy Policy and Support links
+   open the correct pages.
 
 ## Customization
 
-Before publishing, update the following placeholders:
-
-- **Support email** (`support@coachwilliamtraining.com`) — appears on all pages.
-  Search and replace across all `.html` files if you have a different email.
+- **Support email** is set to `chips2haul@yahoo.com` on all pages.
 - **Last updated date** on `privacy.html` — update when you revise the policy.
+- **GitHub Pages URL** — after publishing, update `SITE_URL` in
+  `expo/app/about.tsx` to match your actual GitHub Pages URL so the
+  in-app Privacy Policy and Support links work correctly.
 
 ## App Store Compliance Notes
 
