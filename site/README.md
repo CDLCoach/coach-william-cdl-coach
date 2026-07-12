@@ -25,7 +25,7 @@ The site matches the Coach William CDL Coach app aesthetic:
 
 ## Hosting with GitHub Pages
 
-1. **Create a new GitHub repository** (e.g. `coach-william-training`).
+1. **Create a new GitHub repository** named `coach-william-cdl-coach`.
 
 2. **Upload all files** from this `site/` folder to the repository root:
    ```
@@ -45,7 +45,7 @@ The site matches the Coach William CDL Coach app aesthetic:
 
 4. **Wait 1–2 minutes** for the build to complete. Your site will be live at:
    ```
-   https://<your-username>.github.io/coach-william-training/
+   https://cdlcoach.github.io/coach-william-cdl-coach/
    ```
 
 5. **Use that URL** in your App Store Connect and Google Play Console listings:
@@ -53,17 +53,15 @@ The site matches the Coach William CDL Coach app aesthetic:
    - **Google Play:** Enter the URL in the "Privacy Policy" field under App Content → Data Safety
    - **Google Play:** Also enter the Support page URL in the "Support URL" or "Support email" field
 
-6. **Update the app:** After publishing, update `SITE_URL` in `expo/app/about.tsx`
-   to your live GitHub Pages URL so the in-app Privacy Policy and Support links
-   open the correct pages.
+6. **The app is already configured** for `https://cdlcoach.github.io/coach-william-cdl-coach/`
+   — no further updates needed once Pages is live.
 
 ## Customization
 
 - **Support email** is set to `chips2haul@yahoo.com` on all pages.
 - **Last updated date** on `privacy.html` — update when you revise the policy.
-- **GitHub Pages URL** — after publishing, update `SITE_URL` in
-  `expo/app/about.tsx` to match your actual GitHub Pages URL so the
-  in-app Privacy Policy and Support links work correctly.
+- **GitHub Pages URL** — set to `https://cdlcoach.github.io/coach-william-cdl-coach/`
+  in both the app (`expo/app/about.tsx`) and this README. Already configured.
 
 ## App Store Compliance Notes
 

@@ -30,7 +30,7 @@ import { theme } from "@/constants/theme";
 
 /** Base URL for the Coach William Training website hosted on GitHub Pages.
  *  Update this after publishing your GitHub Pages site. */
-const SITE_URL = "https://coachwilliamtraining.github.io/coach-william-training";
+const SITE_URL = "https://cdlcoach.github.io/coach-william-cdl-coach";
 
 const WELCOME_PARAS = [
   "Welcome to Coach William's Rapid Recall System.",
