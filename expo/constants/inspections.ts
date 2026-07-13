@@ -1038,40 +1038,6 @@ export const inspectionSections: InspectionSection[] = [
     ],
   },
   {
-    id: "cdl-numbers",
-    title: "CDL Numbers to Remember",
-    subtitle: "Key measurements and pressure values",
-    icon: Brain,
-    items: [],
-    subsections: [
-      {
-        id: "cdl_numbers_to_remember",
-        title: "CDL Numbers to Remember",
-        sectionCoachIntro:
-          "Hero, don't try to memorize the whole inspection. Memorize the important numbers, and the rest will start falling into place.",
-        whyItMatters:
-          "Many students lose points simply because they forget important measurements and pressure values. Reviewing these numbers together helps build confidence and improves recall during the CDL examination.",
-        memoryToolAcronym: "Key Numbers",
-        memoryToolItems: [
-          { id: "steer_tread_depth", letter: "Steer Tires", label: "4/32 inch" },
-          { id: "other_tread_depth", letter: "All Other Tires", label: "2/32 inch" },
-          { id: "governor_cutout", letter: "Governor Cut-Out", label: "120 to 140 PSI" },
-          { id: "low_air_warning", letter: "Low Air Warning", label: "Before 55 PSI" },
-          { id: "parking_popout", letter: "Parking Brake Pop-Out", label: "45–20 PSI" },
-          { id: "air_leakage", letter: "Air Leakage Rate Test", label: "Max 4 PSI / 1 min" },
-        ],
-        memoryToolCoachTip:
-          "Don't memorize words—understand the inspection. When you know why you're checking each part, it's much easier to remember.",
-        completionTitleOverride: "Excellent!",
-        completionBodyOverride:
-          "These numbers will serve you well during the CDL examination and throughout your career as a professional driver.",
-        completionCoachMessageOverride:
-          "When the examiner asks for a number, you'll know it cold. That's what preparation looks like.",
-        items: [],
-      },
-    ],
-  },
-  {
     id: "coupling",
     title: "Coupling System",
     subtitle: "Bottom-up inspection of the fifth wheel and connections",
@@ -1293,6 +1259,40 @@ export const inspectionSections: InspectionSection[] = [
       note: "Before saying this, if you think you may have forgotten an inspection item, you are allowed to return and inspect it before telling the examiner you have finished.",
     },
   },
+  {
+    id: "cdl-numbers",
+    title: "CDL Numbers to Remember",
+    subtitle: "Key measurements and pressure values",
+    icon: Brain,
+    items: [],
+    subsections: [
+      {
+        id: "cdl_numbers_to_remember",
+        title: "CDL Numbers to Remember",
+        sectionCoachIntro:
+          "Hero, don't try to memorize the whole inspection. Memorize the important numbers, and the rest will start falling into place.",
+        whyItMatters:
+          "Many students lose points simply because they forget important measurements and pressure values. Reviewing these numbers together helps build confidence and improves recall during the CDL examination.",
+        memoryToolAcronym: "Key Numbers",
+        memoryToolItems: [
+          { id: "steer_tread_depth", letter: "Steer Tires", label: "4/32 inch" },
+          { id: "other_tread_depth", letter: "All Other Tires", label: "2/32 inch" },
+          { id: "governor_cutout", letter: "Governor Cut-Out", label: "120 to 140 PSI" },
+          { id: "low_air_warning", letter: "Low Air Warning", label: "Before 55 PSI" },
+          { id: "parking_popout", letter: "Parking Brake Pop-Out", label: "45–20 PSI" },
+          { id: "air_leakage", letter: "Air Leakage Rate Test", label: "Max 4 PSI / 1 min" },
+        ],
+        memoryToolCoachTip:
+          "Don't memorize words—understand the inspection. When you know why you're checking each part, it's much easier to remember.",
+        completionTitleOverride: "Excellent!",
+        completionBodyOverride:
+          "These numbers will serve you well during the CDL examination and throughout your career as a professional driver.",
+        completionCoachMessageOverride:
+          "When the examiner asks for a number, you'll know it cold. That's what preparation looks like.",
+        items: [],
+      },
+    ],
+  },
 ];
 
 export const airBrakeMeta = {
@@ -1317,14 +1317,12 @@ export const guidedFlow: GuidedFlowEntry[] = [
   { id: "in-cab", title: "In-Cab Inspection", route: "/inspection/in-cab" },
   { id: "service-brake", title: "Service Brake Test", route: "/inspection/service-brake" },
   { id: "parking-brake-tug", title: "Parking Brake (Tug) Test", route: "/inspection/parking-brake-tug" },
-  { id: "air-brake", title: "Air Brake Test", route: "/air-brake" },
   { id: "light-ops", title: "Light Operations Check", route: "/inspection/light-ops" },
   { id: "front", title: "Front of Tractor", route: "/inspection/front" },
   { id: "passenger-side-engine", title: "Passenger Side Engine Compartment", route: "/inspection/passenger-side-engine" },
   { id: "engine", title: "Engine Compartment", route: "/inspection/engine" },
   { id: "driver-side", title: "Driver Side Inspection", route: "/inspection/driver-side" },
   { id: "back", title: "Back of Tractor", route: "/inspection/back" },
-  { id: "cdl-numbers", title: "CDL Numbers to Remember", route: "/inspection/cdl-numbers" },
   { id: "coupling", title: "Coupling System", route: "/inspection/coupling" },
   { id: "trailer", title: "Trailer Inspection", route: "/inspection/trailer" },
 ];

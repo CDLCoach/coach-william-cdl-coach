@@ -114,6 +114,9 @@ function buildProEntries(): MenuEntry[] {
   const entries: MenuEntry[] = [];
 
   const proIds = [
+    "service-brake",
+    "parking-brake-tug",
+    "light-ops",
     "front",
     "passenger-side-engine",
     "engine",
@@ -121,9 +124,6 @@ function buildProEntries(): MenuEntry[] {
     "back",
     "coupling",
     "trailer",
-    "light-ops",
-    "parking-brake-tug",
-    "service-brake",
   ];
 
   for (const id of proIds) {
