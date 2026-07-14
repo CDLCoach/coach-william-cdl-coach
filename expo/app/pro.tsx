@@ -121,7 +121,7 @@ export default function ProUpgradeScreen() {
       } else {
         Alert.alert(
           "No Purchases Found",
-          "We couldn't find any previous Coach William PRO purchases linked to your account.",
+          "No previous Coach William Pro purchase was found. If you believe this is an error, ensure you're signed in to the same store account used for your original purchase.",
         );
       }
     } catch {
@@ -266,25 +266,7 @@ export default function ProUpgradeScreen() {
             </Pressable>
           </>
         ) : (
-          <>
-            <Pressable
-              onPress={handleRestore}
-              disabled={restoring}
-              style={({ pressed }) => [
-                styles.maybeButton,
-                pressed && styles.buttonPressed,
-                restoring && styles.buttonDisabled,
-              ]}
-            >
-              {restoring ? (
-                <ActivityIndicator size="small" color={theme.colors.textMuted} />
-              ) : (
-                <>
-                  <RotateCcw color={theme.colors.textMuted} size={16} strokeWidth={2.4} />
-                  <Text style={styles.maybeText}>Restore</Text>
-                </>
-              )}
-            </Pressable>
+          <View style={styles.buttonStack}>
             <Pressable
               onPress={handlePurchase}
               disabled={purchasing}
@@ -308,7 +290,29 @@ export default function ProUpgradeScreen() {
                 </>
               )}
             </Pressable>
-          </>
+            <Pressable
+              onPress={handleRestore}
+              disabled={restoring}
+              style={({ pressed }) => [
+                styles.restoreButton,
+                pressed && styles.buttonPressed,
+                restoring && styles.buttonDisabled,
+              ]}
+              testID="restore-purchases"
+            >
+              {restoring ? (
+                <>
+                  <ActivityIndicator size="small" color={theme.colors.textMuted} />
+                  <Text style={styles.restoreText}>Restoring…</Text>
+                </>
+              ) : (
+                <>
+                  <RotateCcw color={theme.colors.textMuted} size={17} strokeWidth={2.4} />
+                  <Text style={styles.restoreText}>Restore Purchases</Text>
+                </>
+              )}
+            </Pressable>
+          </View>
         )}
       </View>
     </View>
@@ -598,9 +602,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    flexDirection: "row" as const,
-    alignItems: "center" as const,
-    gap: 10,
     paddingHorizontal: theme.spacing.md,
     paddingTop: theme.spacing.md,
     backgroundColor: theme.colors.surface,
@@ -617,24 +618,10 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  maybeButton: {
-    flexDirection: "row" as const,
-    alignItems: "center" as const,
-    justifyContent: "center" as const,
-    gap: 8,
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    borderRadius: theme.radius.md,
-    borderWidth: 1.5,
-    borderColor: theme.colors.border,
-  },
-  maybeText: {
-    color: theme.colors.textMuted,
-    fontSize: 15,
-    fontWeight: "800",
+  buttonStack: {
+    gap: 10,
   },
   unlockButton: {
-    flex: 1,
     flexDirection: "row" as const,
     alignItems: "center" as const,
     justifyContent: "center" as const,
@@ -642,6 +629,23 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: theme.radius.md,
     backgroundColor: theme.colors.blue,
+  },
+  restoreButton: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    gap: 8,
+    paddingVertical: 14,
+    borderRadius: theme.radius.md,
+    borderWidth: 1.5,
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.background,
+  },
+  restoreText: {
+    color: theme.colors.textMuted,
+    fontSize: 15,
+    fontWeight: "800",
+    letterSpacing: 0.2,
   },
   unlockText: {
     color: theme.colors.background,
