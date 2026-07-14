@@ -1,15 +1,18 @@
 import { router, useLocalSearchParams } from "expo-router";
+import * as Haptics from "expo-haptics";
 import {
   Check,
   ChevronRight,
   Coffee,
   type LucideIcon,
+  RotateCcw,
   Sparkles,
   Truck,
   Zap,
 } from "lucide-react-native";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   Platform,
   Pressable,
@@ -74,18 +77,64 @@ const FUTURE_UPDATES: { label: string; icon: LucideIcon }[] = [
 
 export default function ProUpgradeScreen() {
   const insets = useSafeAreaInsets();
-  const { isPro, unlock } = useProAccess();
+  const { isPro, purchasePro, restorePurchases, proPackage } = useProAccess();
   const { returnTo } = useLocalSearchParams<{ returnTo?: string }>();
+  const [purchasing, setPurchasing] = useState(false);
+  const [restoring, setRestoring] = useState(false);
 
   const navigateAfterUnlock = useCallback(() => {
     if (returnTo) {
-      // Replace the PRO screen with the originally requested route so the
-      // user lands directly on the lesson they tapped — no manual back-nav.
       router.replace(returnTo as never);
     } else {
       router.back();
     }
   }, [returnTo]);
+
+  const handlePurchase = useCallback(async () => {
+    if (purchasing || isPro) return;
+    setPurchasing(true);
+    try {
+      const success = await purchasePro();
+      if (success) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        navigateAfterUnlock();
+      }
+    } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      Alert.alert(
+        "Purchase Failed",
+        "We couldn't complete your purchase. Please try again or restore your previous purchase.",
+      );
+    } finally {
+      setPurchasing(false);
+    }
+  }, [purchasing, isPro, purchasePro, navigateAfterUnlock]);
+
+  const handleRestore = useCallback(async () => {
+    if (restoring) return;
+    setRestoring(true);
+    try {
+      const restored = await restorePurchases();
+      if (restored) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        navigateAfterUnlock();
+      } else {
+        Alert.alert(
+          "No Purchases Found",
+          "We couldn't find any previous Coach William PRO purchases linked to your account.",
+        );
+      }
+    } catch {
+      Alert.alert(
+        "Restore Failed",
+        "We couldn't restore your purchases. Please check your internet connection and try again.",
+      );
+    } finally {
+      setRestoring(false);
+    }
+  }, [restoring, restorePurchases, navigateAfterUnlock]);
+
+  const displayPrice = proPackage?.product?.priceString ?? "$9.99";
 
   return (
     <View style={styles.container}>
@@ -163,7 +212,7 @@ export default function ProUpgradeScreen() {
           <View style={styles.pricingBadge}>
             <Text style={styles.pricingBadgeText}>ONE-TIME PURCHASE</Text>
           </View>
-          <Text style={styles.priceLarge}>$9.99</Text>
+          <Text style={styles.priceLarge}>{displayPrice}</Text>
           <Text style={styles.priceSub}>No Monthly Subscription</Text>
           <View style={styles.priceDivider} />
           <Text style={styles.priceTagline}>Pay Once. Own It Forever.</Text>
@@ -199,49 +248,68 @@ export default function ProUpgradeScreen() {
           { paddingBottom: insets.bottom + theme.spacing.md },
         ]}
       >
-        <Pressable
-          onPress={() => router.back()}
-          style={({ pressed }) => [
-            styles.maybeButton,
-            pressed && styles.buttonPressed,
-          ]}
-          testID="pro-maybe-later"
-        >
-          <Text style={styles.maybeText}>Maybe Later</Text>
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            if (!isPro) {
-              Alert.alert(
-                "Demo PRO Access",
-                "Demo PRO access enabled.\n\nThis temporary unlock is for testing only.\n\nReal Google Play and Apple purchases will be connected before public release.",
-                [
-                  { text: "Cancel", style: "cancel" },
-                  {
-                    text: "Continue",
-                    onPress: () => {
-                      unlock();
-                      navigateAfterUnlock();
-                    },
-                  },
-                ],
-              );
-              return;
-            }
-            navigateAfterUnlock();
-          }}
-          style={({ pressed }) => [
-            styles.unlockButton,
-            pressed && styles.buttonPressed,
-          ]}
-          testID="pro-unlock"
-        >
-          <Truck color={theme.colors.background} size={20} strokeWidth={2.6} />
-          <Text style={styles.unlockText}>
-            {isPro ? "PRO Active" : "Unlock PRO"}
-          </Text>
-          <ChevronRight color={theme.colors.background} size={20} strokeWidth={3} />
-        </Pressable>
+        {isPro ? (
+          <>
+            <View style={styles.proActiveBadge}>
+              <Check color={theme.colors.green} size={18} strokeWidth={3} />
+              <Text style={styles.proActiveText}>PRO Active</Text>
+            </View>
+            <Pressable
+              onPress={navigateAfterUnlock}
+              style={({ pressed }) => [
+                styles.continueButton,
+                pressed && styles.buttonPressed,
+              ]}
+            >
+              <Text style={styles.continueText}>Continue</Text>
+              <ChevronRight color={theme.colors.background} size={20} strokeWidth={3} />
+            </Pressable>
+          </>
+        ) : (
+          <>
+            <Pressable
+              onPress={handleRestore}
+              disabled={restoring}
+              style={({ pressed }) => [
+                styles.maybeButton,
+                pressed && styles.buttonPressed,
+                restoring && styles.buttonDisabled,
+              ]}
+            >
+              {restoring ? (
+                <ActivityIndicator size="small" color={theme.colors.textMuted} />
+              ) : (
+                <>
+                  <RotateCcw color={theme.colors.textMuted} size={16} strokeWidth={2.4} />
+                  <Text style={styles.maybeText}>Restore</Text>
+                </>
+              )}
+            </Pressable>
+            <Pressable
+              onPress={handlePurchase}
+              disabled={purchasing}
+              style={({ pressed }) => [
+                styles.unlockButton,
+                pressed && styles.buttonPressed,
+                purchasing && styles.buttonDisabled,
+              ]}
+              testID="pro-unlock"
+            >
+              {purchasing ? (
+                <>
+                  <ActivityIndicator size="small" color={theme.colors.background} />
+                  <Text style={styles.unlockText}>Processing…</Text>
+                </>
+              ) : (
+                <>
+                  <Truck color={theme.colors.background} size={20} strokeWidth={2.6} />
+                  <Text style={styles.unlockText}>Unlock PRO · {displayPrice}</Text>
+                  <ChevronRight color={theme.colors.background} size={20} strokeWidth={3} />
+                </>
+              )}
+            </Pressable>
+          </>
+        )}
       </View>
     </View>
   );
@@ -550,17 +618,19 @@ const styles = StyleSheet.create({
     }),
   },
   maybeButton: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    gap: 8,
     paddingVertical: 16,
     paddingHorizontal: 20,
     borderRadius: theme.radius.md,
     borderWidth: 1.5,
     borderColor: theme.colors.border,
-    alignItems: "center" as const,
-    justifyContent: "center" as const,
   },
   maybeText: {
     color: theme.colors.textMuted,
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "800",
   },
   unlockButton: {
@@ -575,12 +645,49 @@ const styles = StyleSheet.create({
   },
   unlockText: {
     color: theme.colors.background,
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "900",
     letterSpacing: 0.3,
   },
   buttonPressed: {
     opacity: 0.75,
     transform: [{ scale: 0.97 }],
+  },
+  buttonDisabled: {
+    opacity: 0.5,
+  },
+
+  // ── PRO Active State ──
+  proActiveBadge: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    gap: 8,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: theme.radius.md,
+    backgroundColor: theme.colors.greenSoft,
+    borderWidth: 1.5,
+    borderColor: theme.colors.green,
+  },
+  proActiveText: {
+    color: theme.colors.green,
+    fontSize: 16,
+    fontWeight: "900",
+  },
+  continueButton: {
+    flex: 1,
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    gap: 8,
+    paddingVertical: 16,
+    borderRadius: theme.radius.md,
+    backgroundColor: theme.colors.blue,
+  },
+  continueText: {
+    color: theme.colors.background,
+    fontSize: 18,
+    fontWeight: "900",
+    letterSpacing: 0.3,
   },
 });

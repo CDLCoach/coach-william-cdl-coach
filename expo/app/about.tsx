@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import {
   BookOpen,
   Brain,
+  Check,
   ChevronRight,
   Coffee,
   ExternalLink,
@@ -72,17 +73,12 @@ const FUTURE_PRODUCTS = [
 
 export default function AboutScreen() {
   const insets = useSafeAreaInsets();
-  const { isPro, lock } = useProAccess();
+  const { isPro } = useProAccess();
 
   const openUrl = (url: string) => {
     Linking.openURL(url).catch(() => {
       Alert.alert("Unable to open link", "Please check your internet connection and try again.");
     });
-  };
-
-  const handleResetToFree = () => {
-    lock();
-    Alert.alert("FREE testing mode restored.");
   };
 
   return (
@@ -111,7 +107,7 @@ export default function AboutScreen() {
           {isPro ? (
             <View style={styles.proStatusActive}>
               <View style={styles.proStatusDotActive} />
-              <Text style={styles.proStatusActiveText}>PRO Status: Demo Testing Access</Text>
+              <Text style={styles.proStatusActiveText}>PRO Active</Text>
             </View>
           ) : (
             <View style={styles.proStatusLocked}>
@@ -120,19 +116,15 @@ export default function AboutScreen() {
             </View>
           )}
           <Text style={styles.proStatusNote}>
-            This is a development/beta version. PRO access is simulated for testing. Real Google Play and Apple purchases will be connected before public release.
+            {isPro
+              ? "Thank you for purchasing Coach William PRO. All lessons and features are unlocked."
+              : "Upgrade to unlock the complete CDL inspection training system — all lessons, practice tests, and pressure challenges."}
           </Text>
           {isPro ? (
-            <Pressable
-              onPress={handleResetToFree}
-              style={({ pressed }) => [
-                styles.resetBtn,
-                pressed && styles.btnPressed,
-              ]}
-            >
-              <Lock color={theme.colors.red} size={16} strokeWidth={2.4} />
-              <Text style={styles.resetBtnText}>Reset to FREE (Testing)</Text>
-            </Pressable>
+            <View style={styles.proOwnedBadge}>
+              <Check color={theme.colors.green} size={16} strokeWidth={3} />
+              <Text style={styles.proOwnedText}>PRO Owned Forever</Text>
+            </View>
           ) : (
             <Pressable
               onPress={() => router.push("/pro")}
@@ -402,6 +394,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "800",
   },
+  proOwnedBadge: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    gap: 8,
+    backgroundColor: theme.colors.greenSoft,
+    borderRadius: theme.radius.sm,
+    paddingVertical: 13,
+    paddingHorizontal: theme.spacing.md,
+    marginTop: 4,
+    borderWidth: 1.5,
+    borderColor: theme.colors.green,
+  },
+  proOwnedText: {
+    color: theme.colors.green,
+    fontSize: 15,
+    fontWeight: "900",
+  },
   proStatusLocked: {
     flexDirection: "row" as const,
     alignItems: "center" as const,
@@ -439,24 +449,6 @@ const styles = StyleSheet.create({
   btnPressed: {
     opacity: 0.75,
     transform: [{ scale: 0.97 }],
-  },
-  resetBtn: {
-    flexDirection: "row" as const,
-    alignItems: "center" as const,
-    justifyContent: "center" as const,
-    gap: 8,
-    backgroundColor: theme.colors.surface,
-    borderRadius: theme.radius.sm,
-    paddingVertical: 11,
-    paddingHorizontal: theme.spacing.md,
-    marginTop: 4,
-    borderWidth: 1.5,
-    borderColor: theme.colors.red,
-  },
-  resetBtnText: {
-    color: theme.colors.red,
-    fontSize: 14,
-    fontWeight: "800",
   },
 
   // ── Sections ──

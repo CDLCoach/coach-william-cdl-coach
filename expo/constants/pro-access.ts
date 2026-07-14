@@ -1,8 +1,41 @@
 import createContextHook from "@nkzw/create-context-hook";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useCallback, useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useCallback } from "react";
+import { Platform } from "react-native";
+import Purchases, {
+  PURCHASES_ERROR_CODE,
+  type CustomerInfo,
+  type PurchasesOfferings,
+  type PurchasesPackage,
+} from "react-native-purchases";
 
-const STORAGE_KEY = "coach-william-pro-unlocked";
+const ENTITLEMENT_ID = "pro";
+
+/**
+ * Picks the correct RevenueCat public API key based on platform and build type.
+ * Uses the Test Store key for web preview and dev builds, production keys for
+ * signed iOS/Android builds.
+ */
+function getRCToken(): string | undefined {
+  if (__DEV__ || Platform.OS === "web") {
+    return process.env.EXPO_PUBLIC_REVENUECAT_TEST_API_KEY;
+  }
+  return Platform.select({
+    ios: process.env.EXPO_PUBLIC_REVENUECAT_IOS_API_KEY,
+    android: process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY,
+    default: process.env.EXPO_PUBLIC_REVENUECAT_TEST_API_KEY,
+  });
+}
+
+// Configure RevenueCat at module level — not inside a component or useEffect.
+const rcApiKey = getRCToken();
+if (rcApiKey) {
+  try {
+    Purchases.configure({ apiKey: rcApiKey });
+  } catch (error) {
+    console.warn("[RevenueCat] Configuration failed:", error);
+  }
+}
 
 /**
  * IDs of app sections that require Coach William PRO to open.
@@ -36,33 +69,57 @@ export function isProSection(id: string): boolean {
 }
 
 /**
- * PRO access state — persisted via AsyncStorage so a one-time purchase
- * survives app restarts. Defaults to false (FREE user).
+ * PRO access state backed by RevenueCat entitlements.
+ * The `pro` entitlement is granted after a successful one-time purchase
+ * of the `coach_william_pro` product via the current offering.
  */
 export const [ProAccessProvider, useProAccess] = createContextHook(() => {
-  const [isPro, setIsPro] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    AsyncStorage.getItem(STORAGE_KEY)
-      .then((raw) => {
-        if (raw === "true") {
-          setIsPro(true);
-        }
-      })
-      .catch(() => {})
-      .finally(() => setLoaded(true));
-  }, []);
+  const { data: customerInfo, isLoading: infoLoading } =
+    useQuery<CustomerInfo>({
+      queryKey: ["rc-customer-info"],
+      queryFn: () => Purchases.getCustomerInfo(),
+    });
 
-  const unlock = useCallback(() => {
-    setIsPro(true);
-    AsyncStorage.setItem(STORAGE_KEY, "true").catch(() => {});
-  }, []);
+  const { data: offeringsData } = useQuery<PurchasesOfferings>({
+    queryKey: ["rc-offerings"],
+    queryFn: () => Purchases.getOfferings(),
+    staleTime: 1000 * 60 * 5,
+  });
 
-  const lock = useCallback(() => {
-    setIsPro(false);
-    AsyncStorage.setItem(STORAGE_KEY, "false").catch(() => {});
-  }, []);
+  const isPro = Boolean(customerInfo?.entitlements.active[ENTITLEMENT_ID]);
+  const loaded = !infoLoading;
 
-  return { isPro, loaded, unlock, lock };
+  const proPackage: PurchasesPackage | undefined =
+    offeringsData?.current?.availablePackages?.[0] ??
+    offeringsData?.current?.lifetime ??
+    undefined;
+
+  /** Attempts to purchase the PRO package. Returns true if the entitlement is active afterwards. */
+  const purchasePro = useCallback(async (): Promise<boolean> => {
+    if (!proPackage) {
+      throw new Error("No purchase package available. Please try again later.");
+    }
+    try {
+      const result = await Purchases.purchasePackage(proPackage);
+      await queryClient.invalidateQueries({ queryKey: ["rc-customer-info"] });
+      return Boolean(result.customerInfo.entitlements.active[ENTITLEMENT_ID]);
+    } catch (error: unknown) {
+      const err = error as { code?: string };
+      if (err?.code === PURCHASES_ERROR_CODE.PURCHASE_CANCELLED_ERROR) {
+        return false;
+      }
+      throw error;
+    }
+  }, [proPackage, queryClient]);
+
+  /** Restores previous purchases. Returns true if the pro entitlement is active afterwards. */
+  const restorePurchases = useCallback(async (): Promise<boolean> => {
+    const restoredInfo = await Purchases.restorePurchases();
+    await queryClient.invalidateQueries({ queryKey: ["rc-customer-info"] });
+    return Boolean(restoredInfo.entitlements.active[ENTITLEMENT_ID]);
+  }, [queryClient]);
+
+  return { isPro, loaded, purchasePro, restorePurchases, proPackage };
 });
