@@ -35,14 +35,7 @@
         }
       ],
       "expo-font",
-      "expo-web-browser",
-      [
-        "react-native-purchases",
-        {
-          "apiKey": "EXPO_PUBLIC_REVENUECAT_IOS_API_KEY",
-          "androidApiKey": "EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY"
-        }
-      ]
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
