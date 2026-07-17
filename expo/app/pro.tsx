@@ -14,6 +14,7 @@ import React, { useCallback, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  InteractionManager,
   Platform,
   Pressable,
   ScrollView,
@@ -92,12 +93,14 @@ export default function ProUpgradeScreen() {
 
   const handlePurchase = useCallback(async () => {
     if (purchasing || isPro) return;
-    setPurchasing(true);
+    // Defer state updates until the press gesture settles to avoid
+    // "Cannot find single active touch" pressability crashes.
+    InteractionManager.runAfterInteractions(() => setPurchasing(true));
     try {
       const success = await purchasePro();
       if (success) {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        navigateAfterUnlock();
+        InteractionManager.runAfterInteractions(navigateAfterUnlock);
       }
     } catch (error) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -106,18 +109,20 @@ export default function ProUpgradeScreen() {
         "We couldn't complete your purchase. Please try again or restore your previous purchase.",
       );
     } finally {
-      setPurchasing(false);
+      InteractionManager.runAfterInteractions(() => setPurchasing(false));
     }
   }, [purchasing, isPro, purchasePro, navigateAfterUnlock]);
 
   const handleRestore = useCallback(async () => {
     if (restoring) return;
-    setRestoring(true);
+    // Defer state updates until the press gesture settles to avoid
+    // "Cannot find single active touch" pressability crashes.
+    InteractionManager.runAfterInteractions(() => setRestoring(true));
     try {
       const restored = await restorePurchases();
       if (restored) {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        navigateAfterUnlock();
+        InteractionManager.runAfterInteractions(navigateAfterUnlock);
       } else {
         Alert.alert(
           "No Purchases Found",
@@ -130,7 +135,7 @@ export default function ProUpgradeScreen() {
         "We couldn't restore your purchases. Please check your internet connection and try again.",
       );
     } finally {
-      setRestoring(false);
+      InteractionManager.runAfterInteractions(() => setRestoring(false));
     }
   }, [restoring, restorePurchases, navigateAfterUnlock]);
 
