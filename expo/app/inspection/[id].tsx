@@ -394,7 +394,7 @@ export default function InspectionScreen() {
           >
             <View style={styles.memoryToolQuickRefHeader}>
               <Lightbulb color={theme.colors.blue} size={14} strokeWidth={2.2} />
-              <Text style={styles.memoryToolQuickRefLabel}>Kirkland Rapid Recall</Text>
+              <Text style={styles.memoryToolQuickRefLabel}>Memory Tool</Text>
             </View>
             <View style={styles.memoryToolQuickRefAcronyms}>
               <View style={styles.memoryToolQuickRefChip}>
@@ -1062,7 +1062,7 @@ function CDLNumbersView({
           <View style={styles.memoryToolQuickRefHeader}>
             <Lightbulb color={theme.colors.blue} size={14} strokeWidth={2.2} />
             <Text style={styles.memoryToolQuickRefLabel}>
-              Kirkland Rapid Recall
+              Memory Tool
             </Text>
           </View>
           <View style={styles.memoryToolQuickRefAcronyms}>

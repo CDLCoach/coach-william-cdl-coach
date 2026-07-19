@@ -34,9 +34,9 @@ import { theme } from "@/constants/theme";
 const SITE_URL = "https://cdlcoach.github.io/coach-william-cdl-coach";
 
 const WELCOME_PARAS = [
-  "Welcome to Coach William's Rapid Recall System.",
-  "This app combines industry-standard CDL inspection procedures with Coach William's unique teaching style, inspection flow, coaching methods, memory techniques, humor, and confidence-building approach.",
-  "The goal is simple: Help students become safe, confident professional drivers.",
+  "CDL Inspection Coach was created by Coach William to help CDL students understand, remember, and confidently perform the CDL Pre-Trip Inspection and Air Brake Test.",
+  "The app combines step-by-step instruction, guided practice, Rapid Recall training, pressure challenges, and realistic testing to prepare students for their CDL examination.",
+  "The Kirkland Rapid Recall Method\u2122 is one of the teaching techniques used within the app to strengthen memory and improve recall under pressure.",
 ];
 
 const WILLIAM_ROLES = [
@@ -143,7 +143,7 @@ export default function AboutScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Coffee color={theme.colors.amber} size={20} strokeWidth={2.2} />
-            <Text style={styles.sectionTitle}>WELCOME</Text>
+            <Text style={styles.sectionTitle}>ABOUT COACH WILLIAM</Text>
           </View>
           {WELCOME_PARAS.map((p, i) => (
             <Text key={i} style={[styles.body, i < WELCOME_PARAS.length - 1 && styles.bodySpaced]}>
@@ -185,10 +185,10 @@ export default function AboutScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Brain color={theme.colors.amber} size={20} strokeWidth={2.2} />
-            <Text style={styles.sectionTitle}>COACH WILLIAM'S RAPID RECALL SYSTEM</Text>
+            <Text style={styles.sectionTitle}>RAPID RECALL TRAINING</Text>
           </View>
           <Text style={[styles.body, styles.bodySpaced]}>
-            The Rapid Recall System is Coach William's teaching approach.
+            The Kirkland Rapid Recall Method\u2122 is one of the teaching techniques used within the app. It strengthens memory through repeated, varied recall practice.
           </Text>
           <Text style={[styles.body, styles.bodySpaced]}>It combines:</Text>
           <View style={styles.featureList}>
@@ -200,7 +200,7 @@ export default function AboutScreen() {
             ))}
           </View>
           <Text style={[styles.body, { marginTop: 12 }]}>
-            These features work together as one complete learning system designed to improve confidence, retention, and test-day performance.
+            These features work together as one learning technique designed to improve confidence, retention, and test-day performance.
           </Text>
         </View>
 
@@ -220,7 +220,7 @@ export default function AboutScreen() {
             Coach William does not claim ownership of these acronyms.
           </Text>
           <Text style={styles.noteText}>
-            The originality of this app comes from Coach William's teaching style, inspection flow, coaching philosophy, Rapid Recall System, classroom experience, and real-world trucking knowledge.
+            The originality of this app comes from Coach William's teaching style, inspection flow, coaching philosophy, classroom experience, and real-world trucking knowledge.
           </Text>
         </View>
 
@@ -250,7 +250,7 @@ export default function AboutScreen() {
             <Text style={styles.sectionTitle}>COMING SOON</Text>
           </View>
           <Text style={[styles.body, styles.bodySpaced]}>
-            As Coach William's Rapid Recall System continues to grow, additional training products will be released using the same proven teaching philosophy, confidence-building approach, and coaching style found throughout CDL Inspection Coach.
+            As Coach William Training continues to grow, additional training products will be released using the same proven teaching philosophy, confidence-building approach, and coaching style found throughout CDL Inspection Coach.
           </Text>
           <Text style={[styles.body, styles.bodySpaced]}>
             Each new product will build upon the same learning system to help professional drivers master new skills with confidence.

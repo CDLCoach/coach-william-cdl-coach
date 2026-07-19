@@ -1647,17 +1647,44 @@ export default function AirBrakeCoachScreen() {
         >
           <Text style={styles.screenTitle}>Air Brake Test Coach</Text>
 
-          <View style={styles.methodBadge}>
-            <Text style={styles.methodBadgeText}>
-              Kirkland Rapid Recall Method
-            </Text>
-          </View>
-
           <Text style={styles.intro}>
             Welcome to the Air Brake Test Coach. We are going to learn the test,
             say it forward, say it backward, answer random questions, then build
             speed. Accuracy comes first. Speed comes with practice.
           </Text>
+
+          {/* ── Kirkland Rapid Recall Method ── */}
+          <View style={styles.methodCard}>
+            <Text style={styles.methodTitle}>
+              Kirkland Rapid Recall Method™
+            </Text>
+            <Text style={styles.methodBody}>
+              Knowing the information once isn't enough.
+            </Text>
+            <Text style={[styles.methodBody, { marginBottom: 10 }]}>
+              Professional CDL drivers must be able to recall important information quickly, accurately, and under pressure.
+            </Text>
+            <Text style={[styles.methodBody, { marginBottom: 6 }]}>
+              The Kirkland Rapid Recall Method™ strengthens memory through:
+            </Text>
+            <View style={styles.methodList}>
+              <Text style={styles.methodBullet}>
+                {"\u2022 Forward Recall"}
+              </Text>
+              <Text style={styles.methodBullet}>
+                {"\u2022 Backward Recall"}
+              </Text>
+              <Text style={styles.methodBullet}>
+                {"\u2022 Random Recall"}
+              </Text>
+              <Text style={styles.methodBullet}>
+                {"\u2022 Pressure Recall"}
+              </Text>
+            </View>
+            <Text style={[styles.methodBody, { marginTop: 10 }]}>
+              Take your time, stay focused, and build confidence through repetition.
+            </Text>
+          </View>
 
           {/* Trucker Wisdom */}
           <View style={styles.wisdomCard}>
@@ -1804,6 +1831,37 @@ const styles = StyleSheet.create({
     color: theme.colors.amber,
     fontSize: 15,
     fontWeight: "800",
+  },
+  methodCard: {
+    backgroundColor: theme.colors.amberSoft,
+    borderRadius: theme.radius.md,
+    padding: theme.spacing.md,
+    marginTop: theme.spacing.sm,
+    marginBottom: theme.spacing.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.amberDark,
+  },
+  methodTitle: {
+    color: theme.colors.amber,
+    fontSize: 17,
+    fontWeight: "900",
+    letterSpacing: 0.3,
+    marginBottom: 10,
+  },
+  methodBody: {
+    color: theme.colors.amber,
+    fontSize: 14,
+    fontWeight: "600",
+    lineHeight: 22,
+  },
+  methodList: {
+    gap: 4,
+  },
+  methodBullet: {
+    color: theme.colors.amber,
+    fontSize: 14,
+    fontWeight: "700",
+    lineHeight: 22,
   },
   intro: {
     color: theme.colors.textMuted,

@@ -11,7 +11,7 @@ These pages serve as the required Privacy Policy, Support, and About pages for t
 | `index.html` | Home / landing page with app overview and quick links |
 | `privacy.html` | Privacy Policy (App Store & Google Play compliant) |
 | `support.html` | Support page with FAQ and contact email |
-| `about.html` | About Coach William Training and The Kirkland Rapid Recall Method |
+| `about.html` | About Coach William Training and the teaching techniques used in the app |
 | `css/style.css` | Shared stylesheet (dark navy + gold theme, mobile-responsive) |
 
 ## Design

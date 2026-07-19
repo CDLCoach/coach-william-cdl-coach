@@ -8,14 +8,14 @@
 
 // ── Branding ─────────────────────────────────────────────────────────────────
 
-export const appBrand = "Coach William's Rapid Recall System";
-export const appSubtitle = "CDL Inspection Coach";
+export const appBrand = "CDL Inspection Coach";
+export const appSubtitle = "Coach William Training";
 export const appTagline = "Building Safe, Confident Professional Drivers.";
 
 // ── Welcome ─────────────────────────────────────────────────────────────────
 
 export const welcomeTitle = "Good Morning, Driver!";
-export const welcomeHeading = "Welcome to Coach William's Rapid Recall System";
+export const welcomeHeading = "Welcome to CDL Inspection Coach";
 
 export const coachWilliamGreeting =
   "Grab your coffee and pull up a chair.\n\nEvery professional driver started exactly where you are today.\n\nLet's build your confidence one step at a time.";
