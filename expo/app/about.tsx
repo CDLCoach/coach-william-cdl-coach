@@ -36,7 +36,7 @@ const SITE_URL = "https://cdlcoach.github.io/coach-william-cdl-coach";
 const WELCOME_PARAS = [
   "CDL Inspection Coach was created by Coach William to help CDL students understand, remember, and confidently perform the CDL Pre-Trip Inspection and Air Brake Test.",
   "The app combines step-by-step instruction, guided practice, Rapid Recall training, pressure challenges, and realistic testing to prepare students for their CDL examination.",
-  "The Kirkland Rapid Recall Method\u2122 is one of the teaching techniques used within the app to strengthen memory and improve recall under pressure.",
+  "The Kirkland Rapid Recall Method™ is one of the teaching techniques used within the app to strengthen memory and improve recall under pressure.",
 ];
 
 const WILLIAM_ROLES = [
@@ -64,11 +64,11 @@ const RAPID_RECALL_FEATURES = [
 ];
 
 const FUTURE_PRODUCTS = [
+  "Coach William CDL Permit Prep",
   "Hazmat Coach",
   "Tanker Coach",
   "Doubles & Triples Coach",
   "Backing & Maneuver Coach",
-  "CDL Permit Prep",
 ];
 
 export default function AboutScreen() {
@@ -188,7 +188,7 @@ export default function AboutScreen() {
             <Text style={styles.sectionTitle}>RAPID RECALL TRAINING</Text>
           </View>
           <Text style={[styles.body, styles.bodySpaced]}>
-            The Kirkland Rapid Recall Method\u2122 is one of the teaching techniques used within the app. It strengthens memory through repeated, varied recall practice.
+            The Kirkland Rapid Recall Method™ is one of the teaching techniques used within the app. It strengthens memory through repeated, varied recall practice.
           </Text>
           <Text style={[styles.body, styles.bodySpaced]}>It combines:</Text>
           <View style={styles.featureList}>
@@ -243,11 +243,11 @@ export default function AboutScreen() {
           <Text style={styles.missionFinal}>Let's get to work, Hero!</Text>
         </View>
 
-        {/* ── Future Products ── */}
+        {/* ── Coming Soon from Coach William ── */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Truck color={theme.colors.amber} size={20} strokeWidth={2.2} />
-            <Text style={styles.sectionTitle}>COMING SOON</Text>
+            <Text style={styles.sectionTitle}>COMING SOON FROM COACH WILLIAM</Text>
           </View>
           <Text style={[styles.body, styles.bodySpaced]}>
             As Coach William Training continues to grow, additional training products will be released using the same proven teaching philosophy, confidence-building approach, and coaching style found throughout CDL Inspection Coach.
