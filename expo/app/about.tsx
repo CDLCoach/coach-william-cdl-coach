@@ -55,10 +55,9 @@ const RAPID_RECALL_FEATURES = [
   "Random Recall",
   "Pressure Recall",
   "Mock Examiner",
-  "Memory Toolbox",
   "CDL Numbers to Remember",
-  "Coach William's Coaching System",
   "Positive reinforcement",
+  "Coach William's Coaching System",
   "Classroom humor",
   "Confidence-building techniques",
 ];
