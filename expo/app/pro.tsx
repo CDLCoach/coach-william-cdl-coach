@@ -71,7 +71,7 @@ const FUTURE_UPDATES: { label: string; icon: LucideIcon }[] = [
   { label: "Interactive Truck Photos", icon: Truck },
   { label: "Find the Part", icon: Zap },
   { label: "Coach William's Pairing Method", icon: Sparkles },
-  { label: "Future learning enhancements", icon: Coffee },
+  { label: "And Much More Coming Down the Road...", icon: Coffee },
 ];
 
 // ── Screen ────────────────────────────────────────────────────────────────────
@@ -197,7 +197,7 @@ export default function ProUpgradeScreen() {
         <View style={styles.futureCard}>
           <View style={styles.futureHeader}>
             <Sparkles color={theme.colors.amber} size={18} strokeWidth={2.2} />
-            <Text style={styles.futureTitle}>Future PRO Updates Included</Text>
+            <Text style={styles.futureTitle}>More PRO Features on the Road Ahead</Text>
           </View>
           {FUTURE_UPDATES.map((item) => {
             const Icon = item.icon;
