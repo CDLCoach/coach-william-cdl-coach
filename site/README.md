@@ -58,7 +58,7 @@ The site matches the Coach William CDL Coach app aesthetic:
 
 ## Customization
 
-- **Support email** is set to `chips2haul@yahoo.com` on all pages.
+- **Support email** is set to `cdlinspectioncoach@gmail.com` on all pages.
 - **Last updated date** on `privacy.html` — update when you revise the policy.
 - **GitHub Pages URL** — set to `https://cdlcoach.github.io/coach-william-cdl-coach/`
   in both the app (`expo/app/about.tsx`) and this README. Already configured.
