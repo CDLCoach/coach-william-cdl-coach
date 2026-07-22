@@ -1,0 +1,27 @@
+{
+  "cli": {
+    "version": ">= 15.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "production": {
+      "android": {
+        "buildType": "app-bundle",
+        "credentialsSource": "remote"
+      },
+      "env": {
+        "EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY": "goog_PBzARLyVNkulKIEnCTOTdvmJQFX",
+        "EXPO_PUBLIC_REVENUECAT_IOS_API_KEY": "appl_GBzWjHycBiHupOwvBkwoJcBZUiZ",
+        "EXPO_PUBLIC_REVENUECAT_TEST_API_KEY": "test_PvNqxBSCESSHYvCiiNMpfGmQjMF"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./google-service-account-key.json",
+        "track": "internal"
+      }
+    }
+  }
+}
