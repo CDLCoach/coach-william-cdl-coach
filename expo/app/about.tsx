@@ -26,7 +26,7 @@ import {
   appTagline,
   randomSignOff,
 } from "@/constants/coach-william";
-import { useProAccess } from "@/constants/pro-access";
+import { BETA_MODE, useProAccess } from "@/constants/pro-access";
 import { theme } from "@/constants/theme";
 
 /** Base URL for the Coach William Training website hosted on GitHub Pages.
@@ -106,7 +106,9 @@ export default function AboutScreen() {
           {isPro ? (
             <View style={styles.proStatusActive}>
               <View style={styles.proStatusDotActive} />
-              <Text style={styles.proStatusActiveText}>PRO Active</Text>
+              <Text style={styles.proStatusActiveText}>
+                {BETA_MODE ? "BETA TESTER" : "PRO Active"}
+              </Text>
             </View>
           ) : (
             <View style={styles.proStatusLocked}>
@@ -116,13 +118,17 @@ export default function AboutScreen() {
           )}
           <Text style={styles.proStatusNote}>
             {isPro
-              ? "Thank you for purchasing Coach William PRO. All lessons and features are unlocked."
+              ? BETA_MODE
+                ? "All PRO features are unlocked for closed testing. Purchase is not required in this beta build."
+                : "Thank you for purchasing Coach William PRO. All lessons and features are unlocked."
               : "Upgrade to unlock the complete CDL inspection training system — all lessons, practice tests, and pressure challenges."}
           </Text>
           {isPro ? (
             <View style={styles.proOwnedBadge}>
               <Check color={theme.colors.green} size={16} strokeWidth={3} />
-              <Text style={styles.proOwnedText}>PRO Owned Forever</Text>
+              <Text style={styles.proOwnedText}>
+                {BETA_MODE ? "PRO Unlocked (Beta)" : "PRO Owned Forever"}
+              </Text>
             </View>
           ) : (
             <Pressable

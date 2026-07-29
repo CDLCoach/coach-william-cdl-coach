@@ -14,10 +14,25 @@
         "EXPO_PUBLIC_REVENUECAT_IOS_API_KEY": "appl_GBzWjHycBiHupOwvBkwoJcBZUiZ",
         "EXPO_PUBLIC_REVENUECAT_TEST_API_KEY": "test_PvNqxBSCESSHYvCiiNMpfGmQjMF"
       }
+    },
+    "beta": {
+      "extends": "production",
+      "env": {
+        "EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY": "goog_PBzARLyVNkulKIEnCTOTdvmJQFX",
+        "EXPO_PUBLIC_REVENUECAT_IOS_API_KEY": "appl_GBzWjHycBiHupOwvBkwoJcBZUiZ",
+        "EXPO_PUBLIC_REVENUECAT_TEST_API_KEY": "test_PvNqxBSCESSHYvCiiNMpfGmQjMF",
+        "EXPO_PUBLIC_BETA_MODE": "true"
+      }
     }
   },
   "submit": {
     "production": {
+      "android": {
+        "serviceAccountKeyPath": "./google-service-account-key.json",
+        "track": "internal"
+      }
+    },
+    "beta": {
       "android": {
         "serviceAccountKeyPath": "./google-service-account-key.json",
         "track": "internal"

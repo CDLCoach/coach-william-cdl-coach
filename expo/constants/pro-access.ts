@@ -12,6 +12,14 @@ import Purchases, {
 const ENTITLEMENT_ID = "pro";
 
 /**
+ * Beta mode flag — when true, all PRO features are unlocked automatically
+ * without a purchase. Set via `EXPO_PUBLIC_BETA_MODE=true` in the EAS build
+ * profile for closed testing. Production builds omit this variable, so the
+ * normal $9.99 purchase requirement is restored automatically.
+ */
+export const BETA_MODE: boolean = process.env.EXPO_PUBLIC_BETA_MODE === "true";
+
+/**
  * Picks the correct RevenueCat public API key based on platform and build type.
  * Uses the Test Store key for web preview and dev builds, production keys for
  * signed iOS/Android builds.
@@ -88,16 +96,19 @@ export const [ProAccessProvider, useProAccess] = createContextHook(() => {
     staleTime: 1000 * 60 * 5,
   });
 
-  const isPro = Boolean(customerInfo?.entitlements.active[ENTITLEMENT_ID]);
-  const loaded = !infoLoading;
+  // In beta mode, PRO is always unlocked — no purchase required.
+  const isPro = BETA_MODE || Boolean(customerInfo?.entitlements.active[ENTITLEMENT_ID]);
+  const loaded = BETA_MODE || !infoLoading;
 
   const proPackage: PurchasesPackage | undefined =
     offeringsData?.current?.availablePackages?.[0] ??
     offeringsData?.current?.lifetime ??
     undefined;
 
-  /** Attempts to purchase the PRO package. Returns true if the entitlement is active afterwards. */
+  /** Attempts to purchase the PRO package. Returns true if the entitlement is active afterwards.
+   *  In beta mode, returns true immediately without contacting RevenueCat. */
   const purchasePro = useCallback(async (): Promise<boolean> => {
+    if (BETA_MODE) return true;
     if (!proPackage) {
       throw new Error("No purchase package available. Please try again later.");
     }
@@ -114,12 +125,14 @@ export const [ProAccessProvider, useProAccess] = createContextHook(() => {
     }
   }, [proPackage, queryClient]);
 
-  /** Restores previous purchases. Returns true if the pro entitlement is active afterwards. */
+  /** Restores previous purchases. Returns true if the pro entitlement is active afterwards.
+   *  In beta mode, returns true immediately without contacting RevenueCat. */
   const restorePurchases = useCallback(async (): Promise<boolean> => {
+    if (BETA_MODE) return true;
     const restoredInfo = await Purchases.restorePurchases();
     await queryClient.invalidateQueries({ queryKey: ["rc-customer-info"] });
     return Boolean(restoredInfo.entitlements.active[ENTITLEMENT_ID]);
   }, [queryClient]);
 
-  return { isPro, loaded, purchasePro, restorePurchases, proPackage };
+  return { isPro, loaded, purchasePro, restorePurchases, proPackage, betaMode: BETA_MODE };
 });

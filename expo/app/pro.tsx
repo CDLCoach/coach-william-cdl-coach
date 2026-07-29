@@ -24,7 +24,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useProAccess } from "@/constants/pro-access";
+import { BETA_MODE, useProAccess } from "@/constants/pro-access";
 import { theme } from "@/constants/theme";
 
 // ── Data ─────────────────────────────────────────────────────────────────────
@@ -161,8 +161,9 @@ export default function ProUpgradeScreen() {
           </View>
           <Text style={styles.heroTitle}>Unlock Coach William PRO</Text>
           <Text style={styles.heroSubtitle}>
-            Continue your CDL journey with Coach William's Focused Learning
-            System™.
+            {BETA_MODE
+              ? "All PRO features are unlocked for your closed testing review."
+              : "Continue your CDL journey with Coach William's Focused Learning\nSystem™."}
           </Text>
           <View style={styles.heroDivider} />
           <Text style={styles.heroBody}>Unlock the complete CDL training experience.</Text>
@@ -213,15 +214,27 @@ export default function ProUpgradeScreen() {
         </View>
 
         {/* ── Pricing ── */}
-        <View style={styles.pricingCard}>
-          <View style={styles.pricingBadge}>
-            <Text style={styles.pricingBadgeText}>ONE-TIME PURCHASE</Text>
+        {BETA_MODE ? (
+          <View style={styles.pricingCard}>
+            <View style={styles.pricingBadge}>
+              <Text style={styles.pricingBadgeText}>CLOSED TESTING</Text>
+            </View>
+            <Text style={styles.priceLarge}>PRO Unlocked</Text>
+            <Text style={styles.priceSub}>All features accessible</Text>
+            <View style={styles.priceDivider} />
+            <Text style={styles.priceTagline}>Beta Build — No Purchase Required</Text>
           </View>
-          <Text style={styles.priceLarge}>{displayPrice}</Text>
-          <Text style={styles.priceSub}>No Monthly Subscription</Text>
-          <View style={styles.priceDivider} />
-          <Text style={styles.priceTagline}>Pay Once. Own It Forever.</Text>
-        </View>
+        ) : (
+          <View style={styles.pricingCard}>
+            <View style={styles.pricingBadge}>
+              <Text style={styles.pricingBadgeText}>ONE-TIME PURCHASE</Text>
+            </View>
+            <Text style={styles.priceLarge}>{displayPrice}</Text>
+            <Text style={styles.priceSub}>No Monthly Subscription</Text>
+            <View style={styles.priceDivider} />
+            <Text style={styles.priceTagline}>Pay Once. Own It Forever.</Text>
+          </View>
+        )}
 
         {/* ── Coach William Message ── */}
         <View style={styles.coachCard}>
@@ -257,7 +270,9 @@ export default function ProUpgradeScreen() {
           <>
             <View style={styles.proActiveBadge}>
               <Check color={theme.colors.green} size={18} strokeWidth={3} />
-              <Text style={styles.proActiveText}>PRO Active</Text>
+              <Text style={styles.proActiveText}>
+                {BETA_MODE ? "BETA TESTER — PRO Unlocked" : "PRO Active"}
+              </Text>
             </View>
             <Pressable
               onPress={navigateAfterUnlock}
