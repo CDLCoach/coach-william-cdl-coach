@@ -13,6 +13,7 @@ import {
   Lightbulb,
   Lock,
   ShieldCheck,
+  Star,
   Truck,
   Users,
 } from "lucide-react-native";
@@ -32,6 +33,11 @@ import { theme } from "@/constants/theme";
 /** Base URL for the Coach William Training website hosted on GitHub Pages.
  *  Update this after publishing your GitHub Pages site. */
 const SITE_URL = "https://cdlcoach.github.io/coach-william-cdl-coach";
+
+/** Official store listing rating URL. Set to the Google Play / App Store
+ *  listing once the app is live; null until then, so tapping the Rate button
+ *  safely shows a notice instead of opening an invented URL. */
+const STORE_RATING_URL: string | null = null;
 
 const WELCOME_PARAS = [
   "CDL Inspection Coach was created by Coach William to help CDL students understand, remember, and confidently perform the CDL Pre-Trip Inspection and Air Brake Test.",
@@ -78,6 +84,16 @@ export default function AboutScreen() {
     Linking.openURL(url).catch(() => {
       Alert.alert("Unable to open link", "Please check your internet connection and try again.");
     });
+  };
+
+  /** Opens the official store listing once available; before release, safely
+   *  notifies the user that rating isn't available yet. */
+  const handleRate = () => {
+    if (STORE_RATING_URL) {
+      openUrl(STORE_RATING_URL);
+      return;
+    }
+    Alert.alert("Rate CDL Inspection Coach", "Rating will be available after release.");
   };
 
   return (
@@ -291,6 +307,16 @@ export default function AboutScreen() {
           </View>
           <Text style={styles.visionFinal}>Let's get to work, Hero!</Text>
         </View>
+
+        {/* ── Rate the App ── */}
+        <Pressable
+          onPress={handleRate}
+          style={({ pressed }) => [styles.rateButton, pressed && styles.btnPressed]}
+          testID="rate-app"
+        >
+          <Star color={theme.colors.background} size={18} strokeWidth={2.4} />
+          <Text style={styles.rateButtonText}>Rate CDL Inspection Coach</Text>
+        </Pressable>
 
         {/* ── Legal & Support ── */}
         <View style={styles.legalSection}>
@@ -607,6 +633,22 @@ const styles = StyleSheet.create({
   legalSection: {
     gap: 10,
     marginBottom: theme.spacing.md,
+  },
+  rateButton: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    gap: 8,
+    backgroundColor: theme.colors.amber,
+    borderRadius: theme.radius.md,
+    paddingVertical: 15,
+    marginBottom: theme.spacing.lg,
+  },
+  rateButtonText: {
+    color: theme.colors.background,
+    fontSize: 15,
+    fontWeight: "800",
+    letterSpacing: 0.2,
   },
   legalLink: {
     flexDirection: "row" as const,
