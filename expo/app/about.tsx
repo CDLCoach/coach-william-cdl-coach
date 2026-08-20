@@ -321,6 +321,18 @@ export default function AboutScreen() {
         {/* ── Legal & Support ── */}
         <View style={styles.legalSection}>
           <Pressable
+            onPress={() => router.push("/walkthrough" as never)}
+            style={({ pressed }) => [
+              styles.legalLink,
+              pressed && styles.btnPressed,
+            ]}
+            testID="view-getting-started"
+          >
+            <BookOpen color={theme.colors.amber} size={18} strokeWidth={2.2} />
+            <Text style={styles.legalLinkText}>View Getting Started Guide</Text>
+            <ChevronRight color={theme.colors.textFaint} size={16} strokeWidth={2.4} />
+          </Pressable>
+          <Pressable
             onPress={() => openUrl(`${SITE_URL}/privacy.html`)}
             style={({ pressed }) => [
               styles.legalLink,

@@ -36,6 +36,7 @@ import {
 } from "@/constants/inspections";
 import { isProSection, useProAccess } from "@/constants/pro-access";
 import { theme } from "@/constants/theme";
+import { useWalkthrough } from "@/constants/walkthrough";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -240,8 +241,18 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { isPro } = useProAccess();
+  const { hasSeenWalkthrough, loaded: walkthroughLoaded } = useWalkthrough();
   const [showWelcome, setShowWelcome] = useState(true);
   const cornerMsg = useMemo(() => randomCornerMessage(), []);
+
+  /** Dismisses the welcome banner and shows the Getting Started walkthrough
+   *  for first-time users. Repeat users simply continue to training. */
+  const handleGetStarted = useCallback(() => {
+    setShowWelcome(false);
+    if (!walkthroughLoaded || !hasSeenWalkthrough) {
+      router.push("/walkthrough" as never);
+    }
+  }, [walkthroughLoaded, hasSeenWalkthrough, router]);
 
   return (
     <View style={styles.container}>
@@ -274,11 +285,12 @@ export default function HomeScreen() {
 
           {showWelcome && (
             <Pressable
-              onPress={() => setShowWelcome(false)}
+              onPress={handleGetStarted}
               style={({ pressed }) => [
                 styles.welcomeBeginBtn,
                 pressed && styles.cardPressed,
               ]}
+              testID="lets-get-started"
             >
               <Text style={styles.welcomeBeginText}>Let&apos;s Get Started</Text>
               <ArrowRight

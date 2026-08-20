@@ -7,6 +7,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { CdlNumbersProgressProvider } from "@/constants/cdl-numbers-progress";
 import { ProAccessProvider } from "@/constants/pro-access";
 import { theme } from "@/constants/theme";
+import { WalkthroughProvider } from "@/constants/walkthrough";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -35,6 +36,7 @@ function RootLayoutNav() {
       <Stack.Screen name="pressure-challenge" options={{ title: "Pressure Challenge" }} />
       <Stack.Screen name="about" options={{ title: "About" }} />
       <Stack.Screen name="pro" options={{ title: "Coach William PRO" }} />
+      <Stack.Screen name="walkthrough" options={{ headerShown: false }} />
     </Stack>
   );
 }
@@ -48,9 +50,11 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <ProAccessProvider>
         <CdlNumbersProgressProvider>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <RootLayoutNav />
-          </GestureHandlerRootView>
+          <WalkthroughProvider>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <RootLayoutNav />
+            </GestureHandlerRootView>
+          </WalkthroughProvider>
         </CdlNumbersProgressProvider>
       </ProAccessProvider>
     </QueryClientProvider>
