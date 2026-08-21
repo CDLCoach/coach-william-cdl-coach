@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "app.rork.j5xg22rtcmlykx1sqk1lm"
+      "bundleIdentifier": "com.coachwilliam.cdlinspectioncoach"
     },
     "android": {
       "adaptiveIcon": {

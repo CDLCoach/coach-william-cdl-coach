@@ -6,7 +6,8 @@
       "path": "expo",
       "framework": "react-native",
       "settings": {
-        "androidPackage": "com.coachwilliam.cdlinspectioncoach"
+        "androidPackage": "com.coachwilliam.cdlinspectioncoach",
+        "iosBundleId": "com.coachwilliam.cdlinspectioncoach"
       }
     }
   ]
