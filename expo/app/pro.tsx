@@ -78,7 +78,7 @@ const FUTURE_UPDATES: { label: string; icon: LucideIcon }[] = [
 
 export default function ProUpgradeScreen() {
   const insets = useSafeAreaInsets();
-  const { isPro, purchasePro, restorePurchases, proPackage } = useProAccess();
+  const { isPro, purchasePro, restorePurchases, premiumPrice } = useProAccess();
   const { returnTo } = useLocalSearchParams<{ returnTo?: string }>();
   const [purchasing, setPurchasing] = useState(false);
   const [restoring, setRestoring] = useState(false);
@@ -139,7 +139,8 @@ export default function ProUpgradeScreen() {
     }
   }, [restoring, restorePurchases, navigateAfterUnlock]);
 
-  const displayPrice = proPackage?.product?.priceString ?? "$9.99";
+  // Localized price from Google Play (via RevenueCat); "$9.99" only if store data is unavailable.
+  const displayPrice = premiumPrice ?? "$9.99";
 
   return (
     <View style={styles.container}>

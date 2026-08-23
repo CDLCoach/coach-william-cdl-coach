@@ -4,12 +4,20 @@ import { useCallback } from "react";
 import { Platform } from "react-native";
 import Purchases, {
   PURCHASES_ERROR_CODE,
+  PURCHASE_TYPE,
   type CustomerInfo,
   type PurchasesOfferings,
   type PurchasesPackage,
 } from "react-native-purchases";
 
 const ENTITLEMENT_ID = "pro";
+
+/**
+ * Google Play one-time product ID for the lifetime Premium unlock.
+ * Non-consumable — a single purchase permanently unlocks PRO, and is
+ * restorable across reinstalls/devices on the same Google account.
+ */
+const PREMIUM_PRODUCT_ID = "premium_lifetime";
 
 /**
  * Beta mode flag — when true, all PRO features are unlocked automatically
@@ -79,7 +87,8 @@ export function isProSection(id: string): boolean {
 /**
  * PRO access state backed by RevenueCat entitlements.
  * The `pro` entitlement is granted after a successful one-time purchase
- * of the `coach_william_pro` product via the current offering.
+ * of the `premium_lifetime` Google Play product (via the current offering,
+ * or a direct product purchase if no offering package is available).
  */
 export const [ProAccessProvider, useProAccess] = createContextHook(() => {
   const queryClient = useQueryClient();
@@ -96,6 +105,28 @@ export const [ProAccessProvider, useProAccess] = createContextHook(() => {
     staleTime: 1000 * 60 * 5,
   });
 
+  type PremiumStoreProduct = Awaited<
+    ReturnType<typeof Purchases.getProducts>
+  >[number];
+
+  // Fallback product lookup (used when the offering has no package) so the
+  // paywall can show Google Play's localized price for premium_lifetime.
+  const { data: storeProduct } = useQuery<PremiumStoreProduct | null>({
+    queryKey: ["rc-premium-product"],
+    queryFn: async () => {
+      try {
+        const products = await Purchases.getProducts(
+          [PREMIUM_PRODUCT_ID],
+          PURCHASE_TYPE.INAPP,
+        );
+        return products[0] ?? null;
+      } catch {
+        return null;
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+  });
+
   // In beta mode, PRO is always unlocked — no purchase required.
   const isPro = BETA_MODE || Boolean(customerInfo?.entitlements.active[ENTITLEMENT_ID]);
   const loaded = BETA_MODE || !infoLoading;
@@ -105,15 +136,27 @@ export const [ProAccessProvider, useProAccess] = createContextHook(() => {
     offeringsData?.current?.lifetime ??
     undefined;
 
-  /** Attempts to purchase the PRO package. Returns true if the entitlement is active afterwards.
-   *  In beta mode, returns true immediately without contacting RevenueCat. */
+  /** Localized price string for the Premium product from the store.
+   *  Undefined until store data loads — callers fall back to "$9.99". */
+  const premiumPrice: string | undefined =
+    proPackage?.product?.priceString ?? storeProduct?.priceString ?? undefined;
+
+  /** Attempts to purchase the PRO product. Returns true if the entitlement is active afterwards.
+   *  In beta mode, returns true immediately without contacting RevenueCat.
+   *  Uses the RevenueCat offering package when it maps to premium_lifetime;
+   *  otherwise purchases the Google Play product directly as a one-time
+   *  non-consumable (INAPP). */
   const purchasePro = useCallback(async (): Promise<boolean> => {
     if (BETA_MODE) return true;
-    if (!proPackage) {
-      throw new Error("No purchase package available. Please try again later.");
-    }
     try {
-      const result = await Purchases.purchasePackage(proPackage);
+      const result =
+        proPackage && proPackage.product.identifier === PREMIUM_PRODUCT_ID
+          ? await Purchases.purchasePackage(proPackage)
+          : await Purchases.purchaseProduct(
+              PREMIUM_PRODUCT_ID,
+              null,
+              PURCHASE_TYPE.INAPP,
+            );
       await queryClient.invalidateQueries({ queryKey: ["rc-customer-info"] });
       return Boolean(result.customerInfo.entitlements.active[ENTITLEMENT_ID]);
     } catch (error: unknown) {
@@ -134,5 +177,13 @@ export const [ProAccessProvider, useProAccess] = createContextHook(() => {
     return Boolean(restoredInfo.entitlements.active[ENTITLEMENT_ID]);
   }, [queryClient]);
 
-  return { isPro, loaded, purchasePro, restorePurchases, proPackage, betaMode: BETA_MODE };
+  return {
+    isPro,
+    loaded,
+    purchasePro,
+    restorePurchases,
+    proPackage,
+    premiumPrice,
+    betaMode: BETA_MODE,
+  };
 });
