@@ -23,7 +23,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.coachwilliam.cdlinspectioncoach",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
