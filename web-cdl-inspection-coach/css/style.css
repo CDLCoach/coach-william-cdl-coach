@@ -182,6 +182,70 @@ main {
   margin-bottom: 40px;
 }
 
+/* ── Google Play button ── */
+.play-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 14px 30px;
+  border-radius: var(--radius-pill);
+  background: var(--green);
+  color: var(--bg);
+  font-weight: 800;
+  font-size: 16px;
+  text-decoration: none;
+  border: 2px solid var(--green);
+  box-shadow: 0 6px 18px rgba(61, 210, 126, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.play-button:hover {
+  background: #4fdf8d;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(61, 210, 126, 0.35);
+}
+
+.play-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.play-button-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.play-button-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.15;
+}
+
+.play-button-small {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.play-button-large {
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+@media (max-width: 480px) {
+  .play-button {
+    width: 100%;
+    max-width: 320px;
+    padding: 14px 20px;
+  }
+}
+
 .page-hero-icon {
   width: 72px;
   height: 72px;
