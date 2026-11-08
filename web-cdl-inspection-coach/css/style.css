@@ -182,13 +182,22 @@ main {
   margin-bottom: 40px;
 }
 
+/* ── Store buttons row ── */
+.store-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 24px;
+}
+
 /* ── Google Play button ── */
 .play-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-top: 24px;
   padding: 14px 30px;
   border-radius: var(--radius-pill);
   background: var(--green);
@@ -211,20 +220,59 @@ main {
   transform: translateY(0) scale(0.98);
 }
 
-.play-button-icon {
+/* ── App Store button ── */
+.appstore-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 30px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-rais);
+  color: var(--text);
+  font-weight: 800;
+  font-size: 16px;
+  text-decoration: none;
+  border: 2px solid var(--amber);
+  box-shadow: 0 6px 18px rgba(245, 166, 35, 0.18);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.appstore-button:hover {
+  background: var(--surface-alt);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(245, 166, 35, 0.3);
+}
+
+.appstore-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.appstore-button .store-button-icon {
+  color: var(--amber);
+}
+
+/* ── Shared store button parts ── */
+.store-button-icon {
   width: 24px;
   height: 24px;
   flex-shrink: 0;
 }
 
-.play-button-text {
+.store-button-icon-fill {
+  width: 21px;
+  height: 21px;
+}
+
+.store-button-text {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   line-height: 1.15;
+  text-align: left;
 }
 
-.play-button-small {
+.store-button-small {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.6px;
@@ -232,14 +280,19 @@ main {
   opacity: 0.85;
 }
 
-.play-button-large {
+.store-button-large {
   font-size: 18px;
   font-weight: 900;
   letter-spacing: 0.2px;
 }
 
 @media (max-width: 480px) {
-  .play-button {
+  .store-buttons {
+    flex-direction: column;
+  }
+
+  .play-button,
+  .appstore-button {
     width: 100%;
     max-width: 320px;
     padding: 14px 20px;
