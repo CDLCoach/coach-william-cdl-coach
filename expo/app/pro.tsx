@@ -8,7 +8,6 @@ import {
   RotateCcw,
   Sparkles,
   Truck,
-  Zap,
 } from "lucide-react-native";
 import React, { useCallback, useState } from "react";
 import {
@@ -65,13 +64,6 @@ const INCLUDED_GROUPS: FeatureGroup[] = [
       "Full Pressure Challenge Library",
     ],
   },
-];
-
-const FUTURE_UPDATES: { label: string; icon: LucideIcon }[] = [
-  { label: "Interactive Truck Photos", icon: Truck },
-  { label: "Find the Part", icon: Zap },
-  { label: "Coach William's Pairing Method", icon: Sparkles },
-  { label: "And Much More Coming Down the Road...", icon: Coffee },
 ];
 
 // ── Screen ────────────────────────────────────────────────────────────────────
@@ -194,25 +186,6 @@ export default function ProUpgradeScreen() {
             </View>
           );
         })}
-
-        {/* ── Future Updates ── */}
-        <View style={styles.futureCard}>
-          <View style={styles.futureHeader}>
-            <Sparkles color={theme.colors.amber} size={18} strokeWidth={2.2} />
-            <Text style={styles.futureTitle}>More PRO Features on the Road Ahead</Text>
-          </View>
-          {FUTURE_UPDATES.map((item) => {
-            const Icon = item.icon;
-            return (
-              <View key={item.label} style={styles.futureRow}>
-                <View style={styles.futureIconWrap}>
-                  <Icon color={theme.colors.amber} size={14} strokeWidth={2.2} />
-                </View>
-                <Text style={styles.futureText}>{item.label}</Text>
-              </View>
-            );
-          })}
-        </View>
 
         {/* ── Pricing ── */}
         {BETA_MODE ? (
@@ -475,50 +448,6 @@ const styles = StyleSheet.create({
   featureText: {
     color: theme.colors.text,
     fontSize: 15,
-    fontWeight: "600",
-  },
-
-  // ── Future Updates ──
-  futureCard: {
-    backgroundColor: theme.colors.amberSoft,
-    borderRadius: theme.radius.md,
-    padding: theme.spacing.md,
-    borderWidth: 1,
-    borderColor: theme.colors.amberDark,
-    marginBottom: theme.spacing.lg,
-    marginTop: theme.spacing.sm,
-  },
-  futureHeader: {
-    flexDirection: "row" as const,
-    alignItems: "center" as const,
-    gap: 8,
-    marginBottom: 12,
-  },
-  futureTitle: {
-    color: theme.colors.amber,
-    fontSize: 14,
-    fontWeight: "800",
-    letterSpacing: 0.4,
-  },
-  futureRow: {
-    flexDirection: "row" as const,
-    alignItems: "center" as const,
-    gap: 10,
-    paddingVertical: 6,
-  },
-  futureIconWrap: {
-    width: 26,
-    height: 26,
-    borderRadius: theme.radius.sm,
-    backgroundColor: theme.colors.surface,
-    alignItems: "center" as const,
-    justifyContent: "center" as const,
-    borderWidth: 1,
-    borderColor: theme.colors.amberDark,
-  },
-  futureText: {
-    color: theme.colors.amber,
-    fontSize: 14,
     fontWeight: "600",
   },
 
